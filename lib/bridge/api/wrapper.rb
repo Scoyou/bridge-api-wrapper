@@ -1,4 +1,6 @@
-require "bridge/api/wrapper/version"
+# frozen_string_literal: true
+
+require 'bridge/api/wrapper/version'
 
 # frozen_string_literal: true
 
@@ -20,7 +22,7 @@ module Bridge
         path = if id
                  "/api/author/users/#{id}"
                else
-                 '/api/author/users'
+                 '/api/author/users?limit=1000'
         end
 
         request(
@@ -33,7 +35,7 @@ module Bridge
         path = if id
                  "/api/author/course_templates/#{id}"
                else
-                 '/api/author/course_templates'
+                 '/api/author/course_templates?limit=1000'
         end
 
         request(
@@ -46,7 +48,7 @@ module Bridge
         path = if id
                  "/api/author/live_courses/#{id}"
                else
-                 '/api/author/live_courses'
+                 '/api/author/live_courses?limit=1000'
         end
 
         request(
@@ -59,7 +61,7 @@ module Bridge
         path = if id
                  "/api/author/programs/#{id}"
                else
-                 '/api/author/programs'
+                 '/api/author/programs?limit=1000'
         end
 
         request(
@@ -72,7 +74,7 @@ module Bridge
         path = if id
                  "/api/author/tasks/#{id}"
                else
-                 '/api/author/tasks'
+                 '/api/author/tasks?limit=1000'
         end
 
         request(
@@ -92,15 +94,35 @@ module Bridge
       end
 
       def request(http_method:, endpoint:, params: {})
+        items = []
         response = client.public_send(http_method, endpoint, params)
         parsed_response = Oj.load(response.body)
 
         if response_successful?(response)
-          puts parsed_response
+          puts HTTP_OK_CODE
+          if parsed_response['meta']['next']
+            while parsed_response['meta']['next']
+              puts parsed_response['meta']['next']
+              data = parsed_response['users'] ||
+                     parsed_response['programs'] ||
+                     parsed_response['live_trainings'] ||
+                     parsed_response['tasks']
+              data.each { |item| items << item }
+              # response = HTTParty.get(data['meta']['next'], headers: headers)
+              response = request(
+                http_method: :get,
+                endpoint: parsed_response['meta']['next']
+              )
+            end
+          else
+            items = parsed_response
+          end
+
+          items
         else
           raise error_class(response), "code #{response.status}, response: #{response.body}"
         end
-      end
+    end
 
       def error_class(response)
         case response.status
