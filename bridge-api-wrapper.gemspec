@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Scott Young"]
   spec.email         = ["syoung@instructure.com"]
 
-  spec.summary       = %q{TODO: A light API wrapper for bridgeapp.com's open API.}
-  spec.description   = %q{TODO: A light API wrapper for bridgeapp.com's open API.}
+  spec.summary       = %q{A light API wrapper for bridgeapp.com's open API.}
+  spec.description   = %q{A light API wrapper for bridgeapp.com's open API.}
   spec.homepage      = "https://github.com/Skezey/bridge-api-wrapper"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")

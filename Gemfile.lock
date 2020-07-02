@@ -1,0 +1,25 @@
+PATH
+  remote: .
+  specs:
+    bridge-api-wrapper (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    faraday (1.0.1)
+      multipart-post (>= 1.2, < 3)
+    multipart-post (2.1.1)
+    oj (3.10.6)
+    rake (12.3.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bridge-api-wrapper!
+  faraday (~> 1.0, >= 1.0.1)
+  oj (~> 3.10, >= 3.10.6)
+  rake (~> 12.0)
+
+BUNDLED WITH
+   2.1.2
